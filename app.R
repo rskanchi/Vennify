@@ -128,7 +128,7 @@ ui <- fluidPage(
                     column(6, textInput("label3", "Label", value = "Set C")),
                     column(6, colourInput("color3", "Color", value = "#CC79A7"))
                 ),
-                textInput("output_path", "Output Folder", value = "outputs/"),
+                textInput("output_path", "Output Folder", value = "output/"),
                 actionButton("pasteplotBtn", "Generate Venn")
             ), # end of conditionalPanel for pasting lists
             
@@ -139,6 +139,7 @@ ui <- fluidPage(
                 uiOutput("sign_select_ui"),
                 uiOutput("color_picker_ui_note"),
                 uiOutput("color_picker_ui"),
+                textInput("output_path", "Output Folder", value = "output/"),
                 actionButton("uploadplotBtn", "Generate Venn")
             ) # end of conditionalPanel for uploading file 
             
@@ -262,13 +263,15 @@ server <- function(input, output, session) {
     combined_data <- if (is.null(sign_data)) {set_data} else {cbind(set_data, sign_data)}
     # print the first few lines of the combined_data
     print(head(combined_data))
+    
+    folder_path <- input$output_path
+    if (!dir.exists(folder_path)) dir.create(folder_path, recursive = TRUE)
 
     # Render to UI
     plt <- getVennDiagram(data = combined_data,
                           setVariables = colnames(set_data), setLabels = colnames(set_data), setColors = set_colors, # custom labels??
                           signVariables = if (!is.null(sign_data)) colnames(sign_data) else NULL,
-                          folder = "output" # custom??
-    )
+                          folder = folder_path)
     
     # Render plot 
     # depending on whether sign variables were specified, show ALL or ALL,UP,DOWN
