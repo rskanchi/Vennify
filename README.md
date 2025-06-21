@@ -14,7 +14,8 @@ install.packages("renv")
 renv::restore()
 ```
 
-- Run the app:  In R, execute `shiny::runApp()` in the project folder. In RStudio, click the Run App button in the upper right of the editor.   
+- Run the app:  In R or Rstudio console, execute `shiny::runApp()` in the project folder. In RStudio, you can open `app.R` and 
+click the `Run App` button in the upper right of the editor.   
 
 ### Input options
 
