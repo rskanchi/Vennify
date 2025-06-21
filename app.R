@@ -128,31 +128,60 @@ ui <- fluidPage(
                     column(6, textInput("label3", "Label", value = "Set C")),
                     column(6, colourInput("color3", "Color", value = "#CC79A7"))
                 ),
-                textInput("output_path", "Output Folder", value = "output/"),
+                textInput("output_path", "Output folder", value = "output/"),
                 actionButton("pasteplotBtn", "Generate Venn")
             ), # end of conditionalPanel for pasting lists
             
             conditionalPanel(
                 condition = "input.inputMode == 'upload'",
-                fileInput("datafile", "Upload CSV File", accept = ".csv"),
+                
+                # Instructions
+                HTML("<h4>📄 File Format</h4>
+                    <p>Please upload a <strong>.csv</strong> file with gene lists in separate columns.</p>
+                    <p>If you're using sign/direction values (e.g., log2 fold changes), each set column should have a corresponding sign column.</p>
+                    <p><strong>Example format:</strong></p>
+                    <div style='text-align:center;'>
+                      <table border='1' cellpadding='5' cellspacing='5'>
+                        <thead>
+                          <tr>
+                              <th style='width:60px;'>Set1</th>
+                              <th style='width:60px;'>log2FC1</th>
+                              <th style='width:60px;'>Set2</th>
+                              <th style='width:60px;'>log2FC2</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr><td>GeneA</td><td>1.2</td><td>GeneB</td><td>-0.5</td></tr>
+                          <tr><td>GeneC</td><td>0.8</td><td>GeneD</td><td>2.1</td></tr>
+                          <tr><td>GeneE</td><td>-1.4</td><td>GeneF</td><td>-0.9</td></tr>
+                          <tr><td>GeneG</td><td>0.5</td><td>GeneH</td><td>1.6</td></tr>
+                          <tr><td>GeneI</td><td>-2.0</td><td>GeneJ</td><td>0.4</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <br>
+                  "),
+                
+                fileInput("datafile", "Upload CSV file", accept = ".csv"),
                 uiOutput("set_select_ui"),
                 uiOutput("sign_select_ui"),
                 uiOutput("color_picker_ui_note"),
                 uiOutput("color_picker_ui"),
-                textInput("output_path", "Output Folder", value = "output/"),
+                textInput("output_path", "Output folder", value = "output/"),
                 actionButton("uploadplotBtn", "Generate Venn")
             ) # end of conditionalPanel for uploading file 
             
         ), # end of sidebarPanel
         mainPanel(
-          plotOutput("venn_all"),
-          plotOutput("venn_up"),
-          plotOutput("venn_down")
-            # fluidRow(
-            #     column(4, plotOutput("venn_all")),
-            #     column(4, plotOutput("venn_up")),
-            #     column(4, plotOutput("venn_down"))
-            # ) 
+          tabsetPanel(
+            tabPanel("Overlap Space",
+              plotOutput("venn_all"),
+              plotOutput("venn_up"),
+              plotOutput("venn_down")
+            ), # end of tabPanel Venn
+          
+          tabPanel("Connect", uiOutput("connect_tab")) # end of tabPanel About
+          ) # end of tabsetPanel
         ) # end of mainPanel
     ) # end of sidebarLayout
 ) # end of ui definition
@@ -208,12 +237,16 @@ server <- function(input, output, session) {
   
   output$set_select_ui <- renderUI({
     req(data_reactive())
-    selectizeInput("set_cols", "Choose Set Columns", choices = names(data_reactive()), multiple = TRUE)
+    selectizeInput("set_cols", "Choose set columns", choices = names(data_reactive()), multiple = TRUE)
   })
   
   output$sign_select_ui <- renderUI({
     req(data_reactive())
-    selectizeInput("sign_cols", "Choose Sign Columns (optional)", choices = names(data_reactive()), multiple = TRUE)
+    # add instruction that the sign columns must be in the same order as the set columns
+    tagList(
+      p(HTML("The sign/direction columns (e.g., log2FC values), must be selected in the <strong>same order</strong> as the set columns.")),
+      selectizeInput("sign_cols", "Choose sign columns (optional)", choices = names(data_reactive()), multiple = TRUE)
+    )
   })
   
   clrs <- c("#0072B2", "#E69F00", "#CC79A7", "#D55E00", "#009E73", "#56B4E9", "#F0E442", "#000000", "#999999")
@@ -221,7 +254,7 @@ server <- function(input, output, session) {
   output$color_picker_ui_note <- renderUI({
     req(input$set_cols)
     tagList(
-      h4("Choose Colors for Each Set"),
+      h4("Choose colors for each set"),
       p("You can specify colors using hex codes (e.g., #FF5733) or use the color picker.")
     )
   }) # end of output$color_picker_ui_note
@@ -284,11 +317,31 @@ server <- function(input, output, session) {
     }
   }) # end of observeEvent input$plotBtn
   
-    
-    
+  # main panel quotes
+  quotes <- c(
+    "** A good diagram says more than a thousand words — a great Venn says it in circles **",
+    "** In science, overlaps are where the magic happens. Venn diagrams just let us see it **",
+    "** Venn diagrams: for when you want to say 'yes', 'no', and 'maybe'... all at once **",
+    "** Overlap is not confusion — it's insight waiting to be visualized **"
+  )
+  
+  venn_quote <- reactive({sample(quotes, 1)})
+  
+  output$connect_tab <- renderUI({
+    HTML(paste0("
+    <div style='margin-top: 20px; font-size: 16px;'>
+      <p><strong>GitHub:</strong> <a href='https://github.com/rskanchi' target='_blank'>rskanchi</a></p>
+      <p><strong>LinkedIn:</strong> <a href='https://www.linkedin.com/in/rupa-kanchi-8428982b/' target='_blank'>Rupa Kanchi</a></p>
+      <p><strong>X:</strong> <a href='https://x.com/rskanchi' target='_blank'>@rskanchi</a></p>
+    </div>
+    <hr>
+    <div style='font-style: italic; text-align: left; margin-top: 10px;'>
+      ", venn_quote(), "
+    </div>
+  "))
+  }) # end of connect_tab output
+  
 } # end of server logic
-
-
 
 shinyApp(ui, server)
 
