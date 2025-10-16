@@ -33,7 +33,7 @@ click the `Run App` button in the upper right of the editor.
 - Customize each set's label and color.  
 - Optionally, specify an output folder.  
 
-<img src="docs/1Paste.png" alt="Paste the gene or feature names" width="40%" height="40% style="max-width:400px;" />
+<img src="docs/1Paste.png" alt="Paste the gene or feature names" width="40%" height="40%" style="max-width:400px;" />
 
 #### Upload file
 
@@ -43,7 +43,7 @@ click the `Run App` button in the upper right of the editor.
 - Choose custom colors for each set.  
 
 ![Upload CSV file](docs/2Upload.png)
-<img src="docs/2Upload.png" alt="Paste the gene or feature names" width="30%" height="40%;" />
+<img src="docs/2Upload.png" alt="Paste the gene or feature names" width="30%" height="40%";" />
 
 ### Output
 
@@ -53,7 +53,7 @@ The output files are saved in the folder path you specify.
 - If the sign variables are provided, the app will also generate UP and DOWN-regulated venns, lists and frequencies.  
 
 ![example output](docs/3venn.png)
-<img src="docs/2Upload.png" alt="Paste the gene or feature names" width="50%" height="40%;" />
+<img src="docs/2Upload.png" alt="Paste the gene or feature names" width="50%" height="40%";" />
 
 ### Notes
 
