@@ -6,7 +6,7 @@ A minimal R Shiny app to generate proportional Venn diagrams from pasted or uplo
 
 - Option 1: Download 
     - Click on the green 🟩 `< > Code ▼` 🟩 > `Download Zip`; unzip the folder to a desired location  
-    - Click <span style="background-color:#2ea44f; color:white; padding:2px 6px; border-radius:4px;">Code ▼</span> > `Download Zip`; unzip the folder to a desired location  
+    - Click <kbd>Code ▼</kbd> > `Download Zip`; unzip the folder to a desired location  
     
 - Option 2: Clone using Git
     - In the folder on Rstudio/terminal, run `git clone https://github.com/rskanchi/Vennify.git`
@@ -34,7 +34,7 @@ click the `Run App` button in the upper right of the editor.
 - Customize each set's label and color.  
 - Optionally, specify an output folder.  
 
-![Paste the gene or feature names](docs/1Paste.png)
+<img src="docs/1Paste.png" alt="Paste the gene or feature names" width="60%" style="max-width:500px;" />
 
 #### Upload file
 
