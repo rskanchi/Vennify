@@ -51,7 +51,8 @@ The output files are saved in the folder path you specify.
 - Unique/overlap set elements and frequencies (csv format).  
 - If the sign variables are provided, the app will also generate UP and DOWN-regulated venns, lists and frequencies.  
 
-`Sample output from Upload CSV`
+`Sample output from Upload CSV`   
+  
 <img src="docs/3venn.png" width="40%" height="20%" />
 
 ### Notes
