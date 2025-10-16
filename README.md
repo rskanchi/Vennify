@@ -34,7 +34,6 @@ click the `Run App` button in the upper right of the editor.
 - Optionally, specify an output folder.  
 
 <img src="docs/1Paste.png" width="30%" height="20%" />
-<em>`Paste the gene or feature names`</em>
 
 #### Upload file
 
@@ -44,7 +43,6 @@ click the `Run App` button in the upper right of the editor.
 - Choose custom colors for each set.  
 
   <img src="docs/2Upload.png" width="50%" height="50%" />
-  <em>`Upload CSV file`</em>
 
 ### Output
 
@@ -53,8 +51,8 @@ The output files are saved in the folder path you specify.
 - Unique/overlap set elements and frequencies (csv format).  
 - If the sign variables are provided, the app will also generate UP and DOWN-regulated venns, lists and frequencies.  
 
+`Sample output from Upload CSV`
 <img src="docs/3venn.png" width="40%" height="20%" />
-<em>`Sample output from Upload CSV`</em>
 
 ### Notes
 
