@@ -6,8 +6,9 @@ A minimal R Shiny app to generate proportional Venn diagrams from pasted or uplo
 
 - Option 1: Download 
     - Click on the green 🟩 `< > Code ▼` 🟩 > `Download Zip`; unzip the folder to a desired location  
+    - Click <span style="background-color:#2ea44f; color:white; padding:2px 6px; border-radius:4px;">Code ▼</span> > `Download Zip`; unzip the folder to a desired location  
     
-- Option 2: Clone usign Git
+- Option 2: Clone using Git
     - In the folder on Rstudio/terminal, run `git clone https://github.com/rskanchi/Vennify.git`
 
 ### Running the App
@@ -51,7 +52,7 @@ The output files are saved in the folder path you specify.
 - Unique/overlap set elements and frequencies (csv format).  
 - If the sign variables are provided, the app will also generate UP and DOWN-regulated venns, lists and frequencies.  
 
-![example output](docs/3Output.png)
+![example output](docs/3venn.png)
 
 ### Notes
 
