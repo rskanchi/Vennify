@@ -2,6 +2,14 @@
 
 A minimal R Shiny app to generate proportional Venn diagrams from pasted or uploaded gene lists.
 
+### Download or clone the repo
+
+- Option 1: Download 
+    - Click on the green/🟩 `<> Code ▼` > `Download Zip`; unzip the folder to a desired location  
+    
+- Option 2: Clone usign Git
+    - In the folder on Rstudio/terminal, run `git clone https://github.com/rskanchi/Vennify.git`
+
 ### Running the App
 
 - Require R (\>= 4.1.0).  
@@ -25,12 +33,16 @@ click the `Run App` button in the upper right of the editor.
 - Customize each set's label and color.  
 - Optionally, specify an output folder.  
 
+!(Paste the gene or feature names)[docs/1Paste.png]
+
 #### Upload file
 
-- Upload a CSV with set columns (set1, set2, ...) and optional sign columns (sign1, sign2, ...).  
-- Sign columns could be the log2 fold change, correlation or any other numeric value indicating directionality of the gene/rows. 
+- Upload a `CSV` with set columns (set1, set2, ...) and optional sign columns (sign1, sign2, ...).  
+- Sign columns could be the log2 fold change, correlation or any other numeric value indicating gene/feature directionality. 
 - Select which columns to use as set and sign **in the same order** as set columns.  
 - Choose custom colors for each set.  
+
+!(Upload CSV file)[docs/2Upload.png]
 
 ### Output
 
@@ -38,6 +50,8 @@ The output files are saved in the folder path you specify.
 - Proportional Venn diagrams (pdf format).  
 - Unique/overlap set elements and frequencies (csv format).  
 - If the sign variables are provided, the app will also generate UP and DOWN-regulated venns, lists and frequencies.  
+
+!(example output)[docs/3Output.png]
 
 ### Notes
 
