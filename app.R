@@ -50,16 +50,21 @@ saveVenn <- function(setList, folder, vennLabel = "", alpha = 0.7, lwd = 2, labe
   eulerData <- euler(setList)
   write.csv(data.frame(eulerData$original.values), 
             file = file.path(folder, paste0("overlap_frequencies", vennLabel, ".csv")))
-  pdf(file = file.path(folder, paste0("venn", vennLabel, ".pdf")), width = 15, height = 15)
-  par(mar = c(1,1,1,1))
   plt <- plot(eulerData, quantities = list(fontsize = label.size), 
               edges = list(col = setColors, alpha = alpha, lwd = lwd),
               fills = list(fill = setColors, alpha = alpha),
               legend = list(fontsize = label.size, cex = 1.2), labels = list(fontsize = label.size), 
               main = list(label = paste("\n ---", vennLabel, "elements --- \n"), fontsize = label.size, cex = 1.2))
   
+  pdf(file = file.path(folder, paste0("venn", vennLabel, ".pdf")), width = 15, height = 15)
+  par(mar = c(1,1,1,1))
   print(plt)
   dev.off()
+  
+  png(file = file.path(folder, paste0("venn", vennLabel, ".png")), width = 480, height = 480, units = "px")
+  print(plt)
+  dev.off()
+  
   # Save intersection data
   vennData <- gplots::venn(setList, intersections = TRUE, showSetLogicLabel = TRUE, show.plot = FALSE, simplify = TRUE)
   intersectionList <- as.list(attr(vennData, "intersection"))
@@ -87,7 +92,6 @@ list2DF <- function(vList) {
   df <- as.data.frame(do.call(cbind, vList_sameLen))
   return(df)
 } # end of function list2DF
-
 
 # Enhancements to be integrated into Shiny UI:
 # 1. Minimal UI with sidebar (light mode)
