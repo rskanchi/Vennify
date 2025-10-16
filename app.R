@@ -10,7 +10,7 @@ getVennDiagram <- function(data, setVariables, signVariables = NULL, setLabels =
     setList <- as.list(data[, setVariables])
     setList <- lapply(setList, function(x) unique(x[!is.na(x)]))
     if (!is.null(setLabels)) names(setList) <- setLabels
-    plt_ALL <- saveVenn(setList, folder, label.size = label.size, lwd = lwd, setColors = setColors)
+    plt_ALL <- saveVenn(setList, folder, vennLabel = "ALL", label.size = label.size, lwd = lwd, setColors = setColors)
     
     if (!is.null(signVariables)){
         signList <- as.list(data[, signVariables])
@@ -18,10 +18,15 @@ getVennDiagram <- function(data, setVariables, signVariables = NULL, setLabels =
         
         setList_UP <- lapply(seq_along(setList), function(x) setList[[x]][signList[[x]] > 0])
         names(setList_UP) <- names(setList)
+        setList_UP_length <- sapply(setList_UP, length)
+        setList_UP <- setList_UP[setList_UP_length > 0]
         plt_UP <- saveVenn(setList_UP, folder, vennLabel = "UP", label.size = label.size, lwd = lwd, setColors = setColors)
         
         setList_DOWN <- lapply(seq_along(setList), function(x) setList[[x]][signList[[x]] < 0])
         names(setList_DOWN) <- names(setList)
+        setList_DOWN_length <- sapply(setList_DOWN, length)
+        setList_DOWN <- setList_DOWN[setList_DOWN_length > 0]
+        
         plt_DOWN <- saveVenn(setList_DOWN, folder, vennLabel = "DOWN", label.size = label.size, lwd = lwd, setColors = setColors)
     } # end of if (!is.null(signVariables))
     
@@ -44,14 +49,14 @@ saveVenn <- function(setList, folder, vennLabel = "", alpha = 0.7, lwd = 2, labe
   
   eulerData <- euler(setList)
   write.csv(data.frame(eulerData$original.values), 
-            file = file.path(folder, paste0("overlap_frequencies_", vennLabel, ".csv")))
-  pdf(file = file.path(folder, paste0("venn_", vennLabel, ".pdf")), width = 15, height = 15)
+            file = file.path(folder, paste0("overlap_frequencies", vennLabel, ".csv")))
+  pdf(file = file.path(folder, paste0("venn", vennLabel, ".pdf")), width = 15, height = 15)
   par(mar = c(1,1,1,1))
   plt <- plot(eulerData, quantities = list(fontsize = label.size), 
               edges = list(col = setColors, alpha = alpha, lwd = lwd),
               fills = list(fill = setColors, alpha = alpha),
               legend = list(fontsize = label.size, cex = 1.2), labels = list(fontsize = label.size), 
-              main = list(label = vennLabel, fontsize = label.size, cex = 1.2))
+              main = list(label = paste("\n ---", vennLabel, "elements --- \n"), fontsize = label.size, cex = 1.2))
   
   print(plt)
   dev.off()
@@ -61,7 +66,7 @@ saveVenn <- function(setList, folder, vennLabel = "", alpha = 0.7, lwd = 2, labe
   intersectionDF <- as.data.frame(stringi::stri_list2matrix(intersectionList), row.names = FALSE)
   colnames(intersectionDF) <- names(intersectionList)
   write.table(intersectionDF, 
-              file = file.path(folder, paste0("overlap_elements_", vennLabel, ".csv")), 
+              file = file.path(folder, paste0("overlap_elements", vennLabel, ".csv")), 
               quote = FALSE, sep = ",", row.names = FALSE)
   return(plt)
 } # end of function saveVenn
@@ -175,18 +180,20 @@ ui <- fluidPage(
         mainPanel(
           tabsetPanel(
             tabPanel("Overlap Space",
-              plotOutput("venn_all"),
-              plotOutput("venn_up"),
-              plotOutput("venn_down")
-            ), # end of tabPanel Venn
-          
-          tabPanel("Connect", uiOutput("connect_tab")) # end of tabPanel About
-          ) # end of tabsetPanel
-        ) # end of mainPanel
-    ) # end of sidebarLayout
-) # end of ui definition
+                     hr(),
+                     plotOutput("venn_all"),
+                     tags$hr(style = "border-top: 2px solid #444;"),
+                     plotOutput("venn_up"),
+                     tags$hr(style = "border-top: 2px solid #444;"),
+                     plotOutput("venn_down")
+                     ), # end of tabPanel Venn
+            tabPanel("Connect", uiOutput("connect_tab")) # end of tabPanel About
+            ) # end of tabsetPanel
+          ) # end of mainPanel
+        ) # end of sidebarLayout
+    ) # end of ui definition
 
-server <- function(input, output, session) {
+server <- function(input, output, session){
 
   # PASTE lists
   # observeEvent for the plotting of pasted lists
